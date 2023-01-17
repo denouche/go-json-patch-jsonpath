@@ -24,13 +24,13 @@ package main
 
 import (
 	"fmt"
-
 	jsonpatch "github.com/denouche/go-json-patch-jsonpath"
 )
 
 type People struct {
-	Name string
-	Age  int
+	Name    string    `json:"name"`
+	Age     int       `json:"age"`
+	Friends []*People `json:"friends"`
 }
 
 func NewPeople() *People {
@@ -38,6 +38,17 @@ func NewPeople() *People {
 }
 
 func main() {
+
+	person := &People{
+		Name: "Foo",
+		Age:  42,
+		Friends: []*People{
+			{Name: "friend 1", Age: 19},
+			{Name: "friend 2", Age: 25},
+			{Name: "friend 3", Age: 42},
+		},
+	}
+
 	r := jsonpatch.PatchRequests[People]{
 		Patches: []*jsonpatch.PatchRequest[People]{
 			{
@@ -45,23 +56,24 @@ func main() {
 				Path:      "$.name",
 				Value:     "Bar",
 			},
+			{
+				Operation: "remove",
+				Path:      "$.friends[?(@.age < 20)]",
+			},
 		},
-	}
-
-	person := &People{
-		Name: "Foo",
-		Age:  42,
 	}
 
 	patchedPerson, err := r.Apply(person, NewPeople)
 	if err != nil {
-		// handle error
+		fmt.Printf("error: %s\n", err)
 	}
 
-	fmt.Printf("%s %d\n", person.Name, person.Age) // Foo 42
-	fmt.Printf("%s %d\n", patchedPerson.Name, patchedPerson.Age) // Bar 42
-}
+	fmt.Printf("name:%s age:%d friends:%d\n", person.Name, person.Age, len(person.Friends))
+	// name:Foo age:42 friends:3
 
+	fmt.Printf("name:%s age:%d friends:%d\n", patchedPerson.Name, patchedPerson.Age, len(patchedPerson.Friends))
+	// name:Bar age:42 friends:2
+}
 ```
 
 ## References
