@@ -10,17 +10,22 @@ permissions:
 
 jobs:
 
-  release:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [ '1.18', '1.19' ]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v3
+      - name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v3
         with:
-          go-version: '1.18'
+          go-version: ${{ matrix.go-version }}
 
       - name: Install dependencies
         run: go get .
@@ -29,7 +34,7 @@ jobs:
         run: go build -v ./...
 
       - name: Test with the Go CLI
-        run: go test
+        run: go test -v
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
