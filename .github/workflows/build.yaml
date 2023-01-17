@@ -1,4 +1,4 @@
-name: Release
+name: Build
 
 on:
   push:
@@ -20,21 +20,20 @@ jobs:
 
       - uses: actions/setup-go@v3
         with:
-          go-version: '~1.18.0'
+          go-version: '1.18'
 
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v4
-        with:
-          distribution: goreleaser
-          version: latest
-          args: build --rm-dist --skip-validate
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install dependencies
+        run: go get .
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Test with the Go CLI
+        run: go test
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
         with:
-          semantic_version: 17.4.2
           branches: |
             [
               'main'
