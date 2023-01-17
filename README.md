@@ -19,7 +19,50 @@ go get github.com/denouche/go-json-patch-jsonpath
 
 ## Usage
 
-TODO
+```golang
+package main
+
+import (
+	"fmt"
+
+	jsonpatch "github.com/denouche/go-json-patch-jsonpath"
+)
+
+type People struct {
+	Name string
+	Age  int
+}
+
+func NewPeople() *People {
+	return &People{}
+}
+
+func main() {
+	r := jsonpatch.PatchRequests[People]{
+		Patches: []*jsonpatch.PatchRequest[People]{
+			{
+				Operation: "replace",
+				Path:      "$.name",
+				Value:     "Bar",
+			},
+		},
+	}
+
+	person := &People{
+		Name: "Foo",
+		Age:  42,
+	}
+
+	patchedPerson, err := r.Apply(person, NewPeople)
+	if err != nil {
+		// handle error
+	}
+
+	fmt.Printf("%s %d\n", person.Name, person.Age) // Foo 42
+	fmt.Printf("%s %d\n", patchedPerson.Name, patchedPerson.Age) // Bar 42
+}
+
+```
 
 ## References
 
