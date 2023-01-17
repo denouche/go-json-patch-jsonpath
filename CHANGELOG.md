@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/denouche/go-json-patch-jsonpath/compare/v1.0.0...v1.0.1) (2023-01-17)
+
+
+### Bug Fixes
+
+* reuse patched version for each operation apply ([91e57db](https://github.com/denouche/go-json-patch-jsonpath/commit/91e57db75a7bcc5659060c8f4838adb319956599))
+
 # 1.0.0 (2023-01-17)
 
 
