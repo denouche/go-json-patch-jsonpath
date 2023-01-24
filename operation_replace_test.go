@@ -8,7 +8,7 @@ import (
 
 type applyReplaceTestCase[T any] struct {
 	name              string
-	patches           []*PatchRequest[MyStruct]
+	patches           []*PatchRequest[T]
 	input             *T
 	newEmptyInputFunc func() *T
 	expectError       bool
@@ -26,9 +26,7 @@ func TestPatchRequest_applyReplace(t *testing.T) {
 					Value:     "bar",
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldString: "foo",
 			},
@@ -47,9 +45,7 @@ func TestPatchRequest_applyReplace(t *testing.T) {
 					Value:     42,
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldStruct: &MySubStruct{
 					FieldIntPtr: getPtr(15),
@@ -74,9 +70,7 @@ func TestPatchRequest_applyReplace(t *testing.T) {
 					},
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldStruct: &MySubStruct{
 					FieldBool: false,
@@ -99,9 +93,7 @@ func TestPatchRequest_applyReplace(t *testing.T) {
 					Value:     "newvalue",
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldMapStringString: map[string]string{
 					"field1": "value1",
@@ -126,9 +118,7 @@ func TestPatchRequest_applyReplace(t *testing.T) {
 					Value:     "newvalue",
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldMapStringString: map[string]string{
 					"field1": "value1",
@@ -153,9 +143,7 @@ func TestPatchRequest_applyReplace(t *testing.T) {
 					Value:     "newvalue",
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldMapStringString: map[string]string{
 					"field1/foo.bar": "value1",
@@ -180,9 +168,7 @@ func TestPatchRequest_applyReplace(t *testing.T) {
 					Value:     "newvalue",
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldMapStringString: map[string]string{
 					"field1/foo.bar": "value1",
@@ -207,9 +193,7 @@ func TestPatchRequest_applyReplace(t *testing.T) {
 					Value:     "newvalue",
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldArrayString: []string{"m1", "m2"},
 			},
@@ -228,9 +212,7 @@ func TestPatchRequest_applyReplace(t *testing.T) {
 					Value:     "newvalue",
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldArrayStruct: []*MySubStruct{
 					{
@@ -275,9 +257,7 @@ func TestPatchRequest_applyReplace(t *testing.T) {
 					Value:     "newvalue",
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldArrayStruct: []*MySubStruct{
 					{

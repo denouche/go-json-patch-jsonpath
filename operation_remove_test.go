@@ -8,15 +8,15 @@ import (
 
 type applyRemoveTestCase[T any] struct {
 	name              string
-	patches           []*PatchRequest[MyStruct]
-	input             T
-	newEmptyInputFunc func() T
+	patches           []*PatchRequest[T]
+	input             *T
+	newEmptyInputFunc func() *T
 	expectError       bool
-	expect            T
+	expect            *T
 }
 
 func TestPatchRequest_applyRemove(t *testing.T) {
-	testCases := []applyRemoveTestCase[*MyStruct]{
+	testCases := []applyRemoveTestCase[MyStruct]{
 		{
 			name: "remove_string",
 			patches: []*PatchRequest[MyStruct]{
@@ -25,9 +25,7 @@ func TestPatchRequest_applyRemove(t *testing.T) {
 					Path:      "$.field_string",
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldString: "foo",
 			},
@@ -45,9 +43,7 @@ func TestPatchRequest_applyRemove(t *testing.T) {
 					Path:      "$.field_string_ptr",
 				},
 			},
-			newEmptyInputFunc: func() *MyStruct {
-				return &MyStruct{}
-			},
+			newEmptyInputFunc: NewMyStruct,
 			input: &MyStruct{
 				FieldStringPtr: getPtr("foo"),
 			},

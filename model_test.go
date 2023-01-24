@@ -9,6 +9,10 @@ type MyStruct struct {
 	FieldArrayStruct     []*MySubStruct    `json:"field_array_struct"`
 }
 
+func NewMyStruct() *MyStruct {
+	return &MyStruct{}
+}
+
 type MySubStruct struct {
 	FieldIntPtr  *int   `json:"field_int_ptr"`
 	FieldBool    bool   `json:"field_bool"`
